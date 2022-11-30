@@ -20,7 +20,7 @@ public class CameraFollow : MonoBehaviour
         // Verifico se la targetPosition è fuori dai bordi
         Vector3 boundPosition = new Vector3(
             Mathf.Clamp(targetPosition.x, minValues.x,maxValue.x),
-            Mathf.Clamp(targetPosition.y, minValues.y, maxValue.y),
+            Mathf.Clamp(targetPosition.y + 1, minValues.y, maxValue.y),
             Mathf.Clamp(targetPosition.z, minValues.z, maxValue.z));
         
 
