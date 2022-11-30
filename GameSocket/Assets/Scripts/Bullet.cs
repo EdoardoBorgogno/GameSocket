@@ -28,10 +28,12 @@ public class Bullet : MonoBehaviour
             enemy.TakeDamage(damage);
         }
 
+        if(collision.tag != "Coin") { 
         GameObject explosion = Instantiate(impactEffect, transform.position, transform.rotation);
 
         Destroy(explosion, 1);
 
         Destroy(gameObject);
+        }
     }
 }
