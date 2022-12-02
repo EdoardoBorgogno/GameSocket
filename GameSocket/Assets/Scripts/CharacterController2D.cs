@@ -20,6 +20,7 @@ public class CharacterController2D : MonoBehaviour
 	[Space]
 
 	public UnityEvent OnLandEvent;
+	
 
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
@@ -31,6 +32,8 @@ public class CharacterController2D : MonoBehaviour
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
+
+		
 	}
 
 	private void FixedUpdate()
