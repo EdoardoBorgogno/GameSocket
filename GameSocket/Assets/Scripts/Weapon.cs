@@ -19,6 +19,8 @@ public class Weapon : MonoBehaviour
     void Shoot()
     {
         // Logica di sparo.
+        Debug.Log("SPARO DA SCRIPT (WEAPON.CS)");
+        SocketClient.sendTo("</SHOT/>");
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
     }
 }
