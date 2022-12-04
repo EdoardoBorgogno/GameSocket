@@ -9,7 +9,7 @@ public static class SocketClient
 {
     static Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-    static IPAddress serverAddr = IPAddress.Parse("10.88.228.162");
+    static IPAddress serverAddr = IPAddress.Parse("25.56.142.3");
 
     static IPEndPoint endPoint = new IPEndPoint(serverAddr, 11000);
     public static void sendTo(string param)
