@@ -10,6 +10,19 @@ namespace ServerAlpha.Server.Udp
 {
     internal class UdpSrv
     {
+        private static UdpClient serverSender = new UdpClient();
+        public static void sendMessage(string message, string address, int port)
+        {
+            Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
+            try
+            {
+                serverSender.Send(sendBytes, sendBytes.Length, address, port);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
         public static UdpClient initSocket(int port = 11000)
         {
             return new UdpClient(new IPEndPoint(IPAddress.Any, port));
@@ -37,12 +50,13 @@ namespace ServerAlpha.Server.Udp
 
             while (true)
             {
-                string receivedData = Encoding.ASCII.GetString(socket.Receive(ref sender), 0, data.Length);
+                data = socket.Receive(ref sender);
+                string receivedData = Encoding.ASCII.GetString(data, 0, data.Length);
 
                 string command = getCommand(receivedData);
                 string message = getMessage(receivedData);
 
-                ServerCommand.ServerCommandHandler.serverCommandHandle(command, message, sender.Address.ToString());
+                ServerCommand.ServerCommandHandler.serverCommandHandle(command, message, sender.Address.ToString(), sender.Port);
             }
         }
 

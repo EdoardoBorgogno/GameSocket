@@ -9,6 +9,7 @@ namespace ServerAlpha.Server.ServerCommand
         private readonly string gameUID;
         private readonly string gamePassword;
         private List<Player> playerList = new List<Player>();
+        private readonly string mapName;
 
         // Properties
         public string GameUID
@@ -20,15 +21,25 @@ namespace ServerAlpha.Server.ServerCommand
         {
             get { return gamePassword; }
         }
-
+        public List<Player> PlayerList
+        {
+            get { return playerList; }
+        }
+        public string MapName
+        {
+            get { return mapName; }
+        }
+        
         // Constructor
-        public Game()
+        public Game(string map)
         {
             // Generate a random UID
             gameUID = Guid.NewGuid().ToString();
 
             // Generate a random password
             gamePassword = Guid.NewGuid().ToString().Substring(0, 5);
+
+            mapName = map;
         }
     
         //Methods

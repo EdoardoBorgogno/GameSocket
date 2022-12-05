@@ -9,6 +9,7 @@ namespace ServerAlpha.Server.ServerCommand
         private IPEndPoint endPoint;
         private int hp;
         private bool ready = false;
+        private Tuple<float, float> position = new Tuple<float, float>(0, 0);
         
         // Property
         public IPEndPoint EndPoint
@@ -16,7 +17,6 @@ namespace ServerAlpha.Server.ServerCommand
             get { return endPoint; }
             set { endPoint = value; }
         }
-
         public int HP
         {
             get { return hp; }
@@ -40,6 +40,11 @@ namespace ServerAlpha.Server.ServerCommand
         {
             get { return ready; }
             set { ready = !ready; }
+        }
+        public Tuple<float, float> Position
+        {
+            get { return position; }
+            set { position = value; }
         }
 
         // Construct
