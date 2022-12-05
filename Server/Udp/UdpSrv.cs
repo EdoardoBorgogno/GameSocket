@@ -37,13 +37,23 @@ namespace ServerAlpha.Server.Udp
 
             while (true)
             {
-                data = socket.Receive(ref sender);
+                string receivedData = Encoding.ASCII.GetString(socket.Receive(ref sender), 0, data.Length);
 
-                string receivedData = Encoding.ASCII.GetString(data, 0, data.Length);
+                string command = getCommand(receivedData);
+                string message = getMessage(receivedData);
 
-                string command = receivedData.Substring(receivedData.IndexOf("</") + 2, receivedData.IndexOf("/>") - 2).ToUpper();
-                Console.WriteLine(command);
+                ServerCommand.ServerCommandHandler.serverCommandHandle(command, message, sender.Address.ToString());
             }
+        }
+
+        private static string getMessage(string data)
+        {
+            return data.Substring(data.LastIndexOf(">") + 1);
+        }
+
+        private static string getCommand(string str) 
+        {
+             return str.Substring(str.IndexOf("</") + 2, str.IndexOf("/>") - 2).ToUpper(); 
         }
     }
 }
