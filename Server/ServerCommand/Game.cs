@@ -64,7 +64,7 @@ namespace ServerAlpha.Server.ServerCommand
                 // Add the player to the game
                 playerList.Add(new Player(new IPEndPoint(IPAddress.Parse(address), port)));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
