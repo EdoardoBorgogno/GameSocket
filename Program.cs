@@ -5,12 +5,13 @@ namespace ServerAlpha
 {
     internal class Program
     {
+        //CMD entry point
         static void Main(string[] args)
         {
             string? inputString = string.Empty;
             string[]? inputArray = null;
 
-            //Load cmd informations
+            //Load application informations
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(ConfigurationManager.AppSettings["AppName"] + " ~ " + ConfigurationManager.AppSettings["AppVersion"] + "\n");
 
@@ -23,8 +24,9 @@ namespace ServerAlpha
 
                 if (inputString != null)
                 {
-                    inputArray = inputString.Split(' ');
+                    inputArray = inputString.Split(' '); //Split input string by space, and get command and arguments/parameters
 
+                    // Handle command, first element of inputArray is command, and the others are parameters
                     CommandHandler.commandHandle(inputArray[0], inputArray.Skip(1).ToArray());
                 }
 

@@ -9,7 +9,7 @@ namespace ServerAlpha.Command.CommandList
     internal class CommandExit
     {
         /// <summary>
-        /// Application exit.
+        /// Application exit, if server is still working, close it (because it is in a back thread).
         /// </summary>
         /// <param name="args">No useful param for this function.</param>
         public static bool commandExit(string[]? args)

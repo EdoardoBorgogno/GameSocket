@@ -2,6 +2,7 @@
 {
     internal class CommandHandler
     {
+        // Dictionary with all commands and their functions to execute
         static Dictionary<string, Delegate> dispatcher = new Dictionary<string, Delegate>()
         {
             { "-version", new Func<string[]?, bool>(CommandList.CommandVersion.commandVersion) },
