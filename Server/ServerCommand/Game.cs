@@ -16,7 +16,6 @@ namespace ServerAlpha.Server.ServerCommand
         {
             get { return gameUID; }
         }
-
         public string GamePassword
         {
             get { return gamePassword; }
@@ -34,7 +33,7 @@ namespace ServerAlpha.Server.ServerCommand
         public Game(string map)
         {
             // Generate a random UID
-            gameUID = Guid.NewGuid().ToString();
+            gameUID = Guid.NewGuid().ToString().Substring(0, 7);
 
             // Generate a random password
             gamePassword = Guid.NewGuid().ToString().Substring(0, 5);
@@ -43,6 +42,12 @@ namespace ServerAlpha.Server.ServerCommand
         }
     
         //Methods
+
+        /// <summary>
+        /// Add a player to the game, only if it isn't already in the game.
+        /// </summary>
+        /// <param name="address">Address of the player.</param>
+        /// <param name="port">Port of the player.</param>
         public bool addPlayer(string address, int port)
         {
             if (playerList.Count >= 2)

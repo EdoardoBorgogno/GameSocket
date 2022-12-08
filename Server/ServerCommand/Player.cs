@@ -53,6 +53,5 @@ namespace ServerAlpha.Server.ServerCommand
             this.endPoint = endPoint;
             hp = 100;
         }
-
     }
 }

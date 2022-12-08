@@ -7,7 +7,7 @@ namespace ServerAlpha.Command.CommandList
         public static Thread? serverThread;
 
         /// <summary>
-        /// Start server.
+        /// Start server, open udp socket.
         /// </summary>
         /// <param name="args">Array with parameters. {--udp-port / --tcp-port}</param>
         /// <returns></returns>

@@ -2,8 +2,16 @@ namespace ServerAlpha.Server.ServerCommand
 {
     internal class ServerCommandHandler
     {
+        // List of all matches on server.
         private static List<Game> games = new List<Game>();
 
+        /// <summary>
+        /// Handle server command sent by player.
+        /// </summary>
+        /// <param name="command">Command to handle.</param>
+        /// <param name="message">Message to handle.</param>
+        /// <param name="senderAddress">Address of sender.</param>
+        /// <param name="senderPort">Port of sender.</param>
         public static void serverCommandHandle(string command, string message, string senderAddress, int senderPort)
         {
             bool taskComplete = true;
@@ -25,98 +33,41 @@ namespace ServerAlpha.Server.ServerCommand
                         }
 
                         if (taskComplete)
-                    {
-                        Udp.UdpSrv.sendMessage("</GAMEINIT/>" + game!.GameUID + ";" + game.GamePassword, senderAddress, senderPort);
-                    }
+                        {
+                            Udp.UdpSrv.sendMessage("</GAMEINIT/>" + game!.GameUID + ";" + game.GamePassword, senderAddress, senderPort);
+                        }
                     }
                     break;
                 case "ENDGAME":
                     break;
                 case "JOINGAME":
                     {
-                        // Check if the game exists
-                        foreach (Game item in games)
-                        {
-                            if (item.GameUID == message.Split(";")[0])
-                            {
-                                if(item.GamePassword == message.Split(";")[1])
-                                {
-                                    if(item.addPlayer(senderAddress, senderPort))
-                                    {
-                                        Udp.UdpSrv.sendMessage("</JOINEDTOGAME/>", senderAddress, senderPort);
-                                    }
-                                }
-                            }
-                        }
+                        CommandList.JoinGame.joinGame(message, senderAddress, senderPort, games);
                     }
                     break;
                 case "READY":
                     {
-                        bool allPlayersReady = true;
-
-                        foreach (Game item in games)
-                        {
-                            foreach (Player player in item.PlayerList)
-                            {
-                                if(senderAddress == player.EndPoint.Address.ToString())
-                                {
-                                    player.Ready = true;
-                                }
-
-                                if(!player.Ready)
-                                {
-                                    allPlayersReady = false;
-                                }
-                            }
-                        }
-
-                        if(allPlayersReady)
-                        {
-                            foreach (Game item in games)
-                            {
-                                foreach (Player player in item.PlayerList)
-                                {
-                                    Udp.UdpSrv.sendMessage("</OPENGAME/>", player.EndPoint.Address.ToString(), player.EndPoint.Port);
-                                }
-                            }
-                        }
+                        CommandList.Ready.ready(message, senderAddress, senderPort, games);
                     }
                     break;
                 case "MOVE":
                     {
-
-                        Game match = games.Where(x => x.PlayerList.Where(y => y.EndPoint.Address.ToString() == senderAddress && y.EndPoint.Port == senderPort).Any()).ToList()[0];
-
-                        foreach(var player in match.PlayerList)
-                            if(player.EndPoint.Address.ToString() != senderAddress)
-                                Udp.UdpSrv.sendMessage("</MOVE/>" + message, player.EndPoint.Address.ToString(), player.EndPoint.Port);
+                        CommandList.MatchCommand.sendPlayerAction("</MOVE/>" + message, senderAddress, senderPort, games);
                     }
                     break;
                 case "JUMP":
                     {
-                        Game match = games.Where(x => x.PlayerList.Where(y => y.EndPoint.Address.ToString() == senderAddress && y.EndPoint.Port == senderPort).Any()).ToList()[0];
-
-                        foreach(var player in match.PlayerList)
-                            if(player.EndPoint.Address.ToString() != senderAddress)
-                                Udp.UdpSrv.sendMessage("</JUMP/>", player.EndPoint.Address.ToString(), player.EndPoint.Port);
+                        CommandList.MatchCommand.sendPlayerAction("</JUMP/>", senderAddress, senderPort, games);
                     }
                     break;
                 case "SHOOT":
                     {
-                        Game match = games.Where(x => x.PlayerList.Where(y => y.EndPoint.Address.ToString() == senderAddress && y.EndPoint.Port == senderPort).Any()).ToList()[0];
-
-                        foreach(var player in match.PlayerList)
-                            if(player.EndPoint.Address.ToString() != senderAddress)
-                                Udp.UdpSrv.sendMessage("</SHOOT/>", player.EndPoint.Address.ToString(), player.EndPoint.Port);
+                        CommandList.MatchCommand.sendPlayerAction("</SHOOT/>", senderAddress, senderPort, games);
                     }
                     break;
                 case "HP":
                     {
-                        Game match = games.Where(x => x.PlayerList.Where(y => y.EndPoint.Address.ToString() == senderAddress && y.EndPoint.Port == senderPort).Any()).ToList()[0];
-
-                        foreach(var player in match.PlayerList)
-                            if(player.EndPoint.Address.ToString() != senderAddress)
-                                Udp.UdpSrv.sendMessage("</HP/>" + message, player.EndPoint.Address.ToString(), player.EndPoint.Port);
+                        CommandList.MatchCommand.sendPlayerAction("</HP/>" + message, senderAddress, senderPort, games);
                     }
                     break;
             }

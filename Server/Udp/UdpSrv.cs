@@ -11,9 +11,17 @@ namespace ServerAlpha.Server.Udp
     internal class UdpSrv
     {
         private static UdpClient serverSender = new UdpClient();
+        
+        /// <summary>
+        /// Send message to client.
+        /// </summary>
+        /// <param name="message">Message to send.</param>
+        /// <param name="address">Address of client.</param>
+        /// <param name="port">Port of client.</param>
         public static void sendMessage(string message, string address, int port)
         {
             Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
+
             try
             {
                 serverSender.Send(sendBytes, sendBytes.Length, address, port);
@@ -23,11 +31,19 @@ namespace ServerAlpha.Server.Udp
             }
         }
 
+        /// <summary>
+        /// Create new socket to listen.
+        /// </summary>
+        /// <param name="port">Port to listen.</param>
+        /// <returns>Socket to listen.</returns>
         public static UdpClient initSocket(int port = 11000)
         {
             return new UdpClient(new IPEndPoint(IPAddress.Any, port));
         }
-    
+
+        /// <summary>
+        /// Get all IP addresses of this computer.
+        /// </summary>
         public static List<string> AddressList()
         {
             List<string> list = new List<string>();
@@ -43,6 +59,10 @@ namespace ServerAlpha.Server.Udp
             return list;
         }
     
+        /// <summary>
+        /// Start listening.
+        /// </summary>
+        /// <param name="socket">Socket to listen.</param>
         public static void serverStart(UdpClient socket)
         {
             byte[] data = new byte[1024];
@@ -60,11 +80,17 @@ namespace ServerAlpha.Server.Udp
             }
         }
 
+        /// <summary>
+        /// Get message from string.
+        /// </summary>
         private static string getMessage(string data)
         {
             return data.Substring(data.LastIndexOf(">") + 1);
         }
 
+        /// <summary>
+        /// Get command from string.
+        /// </summary>
         private static string getCommand(string str) 
         {
              return str.Substring(str.IndexOf("</") + 2, str.IndexOf("/>") - 2).ToUpper(); 
