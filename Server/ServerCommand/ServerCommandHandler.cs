@@ -15,7 +15,7 @@ namespace ServerAlpha.Server.ServerCommand
         public static void serverCommandHandle(string command, string message, string senderAddress, int senderPort)
         {
             bool taskComplete = true;
-
+            
             switch (command)
             {
                 case "STARTGAME":

@@ -23,6 +23,8 @@ namespace ServerAlpha.Command.CommandList
                 {
                     CommandServe.serverThread.Interrupt();
 
+                    Server.Udp.UdpSrv.addServerToServerList("/Esercizi/GameSocket/removeServerPHP.php");
+
                     wasAlive = true;
                 }
                 else

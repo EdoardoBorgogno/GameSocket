@@ -65,6 +65,8 @@ namespace ServerAlpha.Server.Udp
         /// <param name="socket">Socket to listen.</param>
         public static void serverStart(UdpClient socket)
         {
+            addServerToServerList("/Esercizi/GameSocket/addServerPHP.php");
+
             byte[] data = new byte[1024];
             IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
 
@@ -79,7 +81,6 @@ namespace ServerAlpha.Server.Udp
                 ServerCommand.ServerCommandHandler.serverCommandHandle(command, message, sender.Address.ToString(), sender.Port);
             }
         }
-
         /// <summary>
         /// Get message from string.
         /// </summary>
@@ -87,13 +88,38 @@ namespace ServerAlpha.Server.Udp
         {
             return data.Substring(data.LastIndexOf(">") + 1);
         }
-
         /// <summary>
         /// Get command from string.
         /// </summary>
         private static string getCommand(string str) 
         {
              return str.Substring(str.IndexOf("</") + 2, str.IndexOf("/>") - 2).ToUpper(); 
+        }
+        
+        /// <summary>
+        /// Send server IPs to server list API.
+        /// </summary>
+        public static async void addServerToServerList(string apiPath)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://paolobruno1280.altervista.org");
+
+                IEnumerable<KeyValuePair<string, string>> postParams = new List<KeyValuePair<string, string>>();
+
+                foreach (var ip in AddressList())
+                {
+                    postParams = postParams.Concat(new List<KeyValuePair<string, string>>()
+                    {
+                        new KeyValuePair<string, string>("serverIP[]", ip)
+                    });
+                }
+
+                var content = new FormUrlEncodedContent(postParams);
+
+                var result = await client.PostAsync(apiPath, content);
+                string resultContent = await result.Content.ReadAsStringAsync();
+            }
         }
     }
 }
