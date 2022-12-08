@@ -11,7 +11,7 @@ public static class SocketClient
 
     static IPAddress serverAddr = IPAddress.Parse("25.56.142.3");
 
-    static IPEndPoint endPoint = new IPEndPoint(serverAddr, 11000);
+    static IPEndPoint endPoint = new IPEndPoint(serverAddr, 14000);
     public static void sendTo(string param)
     {
         
