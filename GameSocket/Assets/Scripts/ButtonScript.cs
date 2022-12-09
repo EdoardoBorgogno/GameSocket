@@ -3,20 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class ButtonScript : MonoBehaviour
 {
-    public void onClick()
+    public TextMeshProUGUI Text;
+    public GameObject btnPlayerOne;
+    public GameObject btnPlayerTwo;
+    //public UnityEngine.UI.Button Btn;
+    public bool isReadyP1 = false;
+    public bool isReadyP2 = false;
+
+    private void Start()
     {
-        if(this.GetComponent<Image>().tintColor == Color.red)
-        {
-            this.GetComponent<Image>().tintColor = Color.green;
-            this.GetComponent<TextMeshProUGUI>().text = "Ready";
-        }
-        else 
-        {
-            this.GetComponent<Image>().tintColor = Color.red;
-            this.GetComponent<TextMeshProUGUI>().text = "Not Ready";
-        }
+
     }
+
+    private void Update()
+    {
+        if (btnPlayerTwo.GetComponent<UnityEngine.UI.Image>().color == Color.green) isReadyP2 = true;
+    }
+
+    public void changeState()
+    {
+        Text.text = "Ready";
+        btnPlayerOne.GetComponent<UnityEngine.UI.Image>().color = Color.green;
+        isReadyP1 = true;
+        btnPlayerOne.GetComponent<UnityEngine.UI.Button>().interactable = false;
+
+        Debug.Log("READY!");
+        SocketClient.Send("</READY/>");
+    }
+
 }
+
+
+
+
+
+
