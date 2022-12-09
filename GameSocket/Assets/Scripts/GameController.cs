@@ -10,6 +10,9 @@ public class GameController : MonoBehaviour
 {
     public Sprite purpleSoldier;
     private SocketClient sock = new SocketClient();
+    public TextMeshProUGUI JoinGUID;
+    public TextMeshProUGUI JoinPWD;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +21,7 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        SocketClient.senderIp = "25.59.104.166";
+        SocketClient.senderIp = "25.56.142.3";
         SocketClient.senderPort = 11000;
         
         sock.StartReceiveThread();
@@ -73,11 +76,11 @@ public class GameController : MonoBehaviour
 
     public void JoinGame()
     {
-        string GUID = GameObject.Find("GUIDInputBox").GetComponent<TextMeshProUGUI>().text;
-        string PWD = GameObject.Find("PWDInputBox").GetComponent<TextMeshProUGUI>().text;
-        GameObject errorAlert = GameObject.Find("errorAlert");
+        /*string GUID = GameObject.Find("joinGUID").GetComponent<InputField>().text;
+        string PWD = GameObject.Find("joinPWD").GetComponent<InputField>().text;*/
+        //GameObject errorAlert = GameObject.Find("errorAlert");
 
-        if(GUID == string.Empty && PWD == string.Empty)
+        /*if(GUID == string.Empty && PWD == string.Empty)
         {
             errorAlert.GetComponent<TextMeshProUGUI>().text = "Inserisci il Game ID e la Password!";
         }
@@ -91,8 +94,9 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            SocketClient.Send("</JOINGAME/>" + GUID + ";" + PWD);
-        }
+            
+        }*/
+        SocketClient.Send("</JOINGAME/>" + JoinGUID.text + ";" + JoinPWD.text);
     }
 
 }
