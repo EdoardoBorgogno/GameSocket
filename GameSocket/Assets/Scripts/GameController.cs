@@ -10,6 +10,9 @@ public class GameController : MonoBehaviour
 
     }
 
+    private void Awake()
+    {
+        SocketClient.receiveFrom();
+    }
 
-   
 }
