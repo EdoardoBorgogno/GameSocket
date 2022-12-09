@@ -64,12 +64,12 @@ public class CharacterController2D : MonoBehaviour
 			// Move the character by finding the target velocity
 			if(move != 0) { 
 			Debug.Log("MI MUOVO (CHARACTERCONTROLLER.CS)");
-			SocketClient.sendTo("</MOVE/>");
+			SocketClient.Send("</MOVE/>");
 			}
 			if(jump)
             {
 				Debug.Log("SALTO (CHARACTERCONTROLLER.CS)");
-				SocketClient.sendTo("</JUMP/>");
+				SocketClient.Send("</JUMP/>");
 			}
 			Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
 			// And then smoothing it out and applying it to the character

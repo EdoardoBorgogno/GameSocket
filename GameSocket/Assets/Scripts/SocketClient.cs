@@ -1,83 +1,84 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
-using System;
 using System.Threading;
 using UnityEngine;
-using TMPro;
 
-public static class SocketClient
+public class SocketClient : MonoBehaviour
 {
-    static Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+    private static UdpClient udpClient = new UdpClient(14000);
 
-    static IPAddress serverAddr = IPAddress.Parse("25.56.142.3");
+    private readonly Queue<string> incomingQueue = new Queue<string>();
+    Thread receiveThread;
+    private bool threadRunning = true;
+    public static string senderIp;
+    public static int senderPort;
 
-    static IPEndPoint endPoint = new IPEndPoint(serverAddr, 11000);
-
-    public static void sendTo(string param)
+    public void StartReceiveThread()
     {
-        try
-        {
-            byte[] send_buffer = Encoding.ASCII.GetBytes(param);
-
-            sock.SendTo(send_buffer, endPoint);
-        }
-        catch (Exception)
-        {
-
-        }
+        receiveThread = new Thread(() => ListenForMessages());
+        receiveThread.IsBackground = true;
+        threadRunning = true;
+        receiveThread.Start();
     }
 
-    public static void receiveFrom()
+    private void ListenForMessages()
     {
-        new Thread(() =>
+        IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+
+        while (threadRunning)
         {
-            while (true)
+            try
             {
-                try
+                Byte[] receiveBytes = udpClient.Receive(ref remoteIpEndPoint);
+                string returnData = Encoding.UTF8.GetString(receiveBytes);
+
+                lock (incomingQueue)
                 {
-                    byte[] receive_buffer = new byte[1024];
-
-                    EndPoint senderRemote = (EndPoint)endPoint;
-
-                    int rec = sock.ReceiveFrom(receive_buffer, ref senderRemote);
-
-                    Array.Resize(ref receive_buffer, rec);
-
-                    var str = Encoding.ASCII.GetString(receive_buffer);
-                    
-
-                    switch (getCommand(str))
-                    {
-                        case "GAMEINIT":
-
-                            Debug.Log(getMessage(str));
-                            Debug.Log(GameObject.Find("lobbyGUID"));
-                            GameObject.Find("lobbyGUID").GetComponent<TextMeshProUGUI>().text = "CIAO";
-                            GameObject.Find("lobbyPWD").GetComponent<TextMeshProUGUI>().text = "CIAO";
-
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-                catch (Exception)
-                {
-
+                    incomingQueue.Enqueue(returnData);
                 }
             }
-        }).Start();
+            catch (SocketException e)
+            {
+            }
+            catch (Exception e)
+            {
+            }
+            Thread.Sleep(1);
+        }
     }
 
-    private static string getCommand(string str)
+    public string[] getMessages()
     {
-        return str.Substring(str.IndexOf("</") + 2, str.IndexOf("/>") - 2).ToUpper();
+        string[] pendingMessages = new string[0];
+        lock (incomingQueue)
+        {
+            pendingMessages = new string[incomingQueue.Count];
+            int i = 0;
+            while (incomingQueue.Count != 0)
+            {
+                pendingMessages[i] = incomingQueue.Dequeue();
+                i++;
+            }
+        }
+
+        return pendingMessages;
     }
 
-    private static string getMessage(string data)
+    public static void Send(string message)
     {
-        return data.Substring(data.LastIndexOf(">") + 1);
+        IPEndPoint serverEndpoint = new IPEndPoint(IPAddress.Parse(senderIp), senderPort);
+        Byte[] sendBytes = Encoding.UTF8.GetBytes(message);
+        udpClient.Send(sendBytes, sendBytes.Length, serverEndpoint);
     }
 
+    public void Stop()
+    {
+        threadRunning = false;
+        receiveThread.Interrupt();
+        udpClient.Close();
+    }
 }

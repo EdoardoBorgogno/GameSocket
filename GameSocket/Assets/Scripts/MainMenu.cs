@@ -20,7 +20,7 @@ public class MainMenu : MonoBehaviour
     public void createLobby(string map)
     {
         Debug.Log("Invio al server: </STARTGAME/>" + map);
-        SocketClient.sendTo("</STARTGAME/>" + map);
+        SocketClient.Send("</STARTGAME/>" + map);
         
     }
 }
