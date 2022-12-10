@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     private SocketClient sock = new SocketClient();
     public TextMeshProUGUI JoinGUID;
     public TextMeshProUGUI JoinPWD;
+    public GameObject LobbyMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +22,7 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        SocketClient.senderIp = "25.56.142.3";
+        SocketClient.senderIp = "25.59.104.166";
         SocketClient.senderPort = 11000;
         
         sock.StartReceiveThread();
@@ -35,12 +36,15 @@ public class GameController : MonoBehaviour
             {
                 case "GAMEINIT":
                     Debug.Log(getMessage(message));
+                    GameObject.Find("LoadingScreen").SetActive(false);
+                    LobbyMenu.SetActive(true);
                     Debug.Log(message.Substring(message.IndexOf("/>") + 2, 8));
                     GameObject.Find("lobbyGUID").GetComponent<TextMeshProUGUI>().text = "Game ID:" + message.Substring(message.IndexOf("/>") + 2, 7);
                     GameObject.Find("lobbyPWD").GetComponent<TextMeshProUGUI>().text = "Password:" + message.Substring(message.IndexOf(";") + 1, 5);
                     break;
 
                 case "READY":
+                    Debug.Log(getMessage(message));
                     GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Image>().color = Color.green;
                     GameObject.Find("TextReadyP2").GetComponent<TextMeshProUGUI>().text = "READY";
                     GameObject.Find("ReadyBtnP1Joined").GetComponent<UnityEngine.UI.Image>().color = Color.green;
@@ -48,10 +52,12 @@ public class GameController : MonoBehaviour
                     break;
 
                 case "JOINEDTOGAME":
+                    Debug.Log(getMessage(message));
                     GameObject.Find("PlayerTwo").GetComponent<UnityEngine.UI.Image>().sprite = purpleSoldier;
                     break;
 
                 default:
+                    Debug.Log(getMessage(message));
                     Debug.Log("Comando non valido");
                     break;
             }
