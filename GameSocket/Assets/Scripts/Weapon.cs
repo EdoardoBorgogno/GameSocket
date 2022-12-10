@@ -20,7 +20,7 @@ public class Weapon : MonoBehaviour
     {
         // Logica di sparo.
         Debug.Log("SPARO DA SCRIPT (WEAPON.CS)");
-        SocketClient.Send("</SHOT/>");
+        //SocketClient.Send("</SHOT/>");
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
     }
 }

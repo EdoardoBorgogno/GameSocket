@@ -1966,6 +1966,7 @@ MonoBehaviour:
   JoinGUID: {fileID: 2125412745}
   JoinPWD: {fileID: 1081414225}
   LobbyMenu: {fileID: 1902918543}
+  JoinLobbyMenu: {fileID: 1998827605}
 --- !u!4 &722209914
 Transform:
   m_ObjectHideFlags: 0
@@ -2871,8 +2872,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00010586, y: -23.918}
-  m_SizeDelta: {x: 50.904, y: 43.074}
+  m_AnchoredPosition: {x: -0.00010586, y: -22.728}
+  m_SizeDelta: {x: 50.904, y: 45.455}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &977349921
 MonoBehaviour:
@@ -3886,7 +3887,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1256781334}
         m_TargetAssemblyTypeName: ButtonScript, Assembly-CSharp
         m_MethodName: changeState
         m_Mode: 1
@@ -5898,7 +5899,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1998827606}
   - component: {fileID: 1998827608}
-  - component: {fileID: 1998827607}
   m_Layer: 5
   m_Name: JoinLobbyMenu
   m_TagString: Untagged
@@ -5930,18 +5930,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.0036497, y: -0.0008688}
   m_SizeDelta: {x: 224.96, y: 126.54}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1998827607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1998827605}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bc3f1684a56aea4f87e0858b5de74f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1998827608
 MonoBehaviour:
   m_ObjectHideFlags: 0

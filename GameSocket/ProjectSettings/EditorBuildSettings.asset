@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 7e2001152028e0f4eb1ae4dff27d2d9c
   - enabled: 1
-    path: Assets/Scenes/underground.unity
+    path: Assets/Scenes/street.unity
     guid: 705a123039d843a48bace84cc3f69296
   m_configObjects: {}
