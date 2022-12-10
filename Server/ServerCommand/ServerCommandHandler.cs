@@ -65,9 +65,9 @@ namespace ServerAlpha.Server.ServerCommand
                         CommandList.MatchCommand.sendPlayerAction("</SHOOT/>", senderAddress, senderPort, games);
                     }
                     break;
-                case "HP":
+                case "COIN":
                     {
-                        CommandList.MatchCommand.sendPlayerAction("</HP/>" + message, senderAddress, senderPort, games);
+                        CommandList.MatchCommand.sendPlayerAction("</COIN/>" + message, senderAddress, senderPort, games);
                     }
                     break;
             }
