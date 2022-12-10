@@ -29,7 +29,6 @@ public class ButtonScript : MonoBehaviour
     {
         Text.text = "Ready";
         btnPlayerOne.GetComponent<UnityEngine.UI.Image>().color = Color.green;
-        isReadyP1 = true;
         btnPlayerOne.GetComponent<UnityEngine.UI.Button>().interactable = false;
 
         Debug.Log("READY!");

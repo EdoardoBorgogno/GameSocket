@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     public TextMeshProUGUI JoinGUID;
     public TextMeshProUGUI JoinPWD;
     public GameObject LobbyMenu;
+    public GameObject JoinLobbyMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +23,7 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        SocketClient.senderIp = "25.59.104.166";
+        SocketClient.senderIp = "25.56.142.3";
         SocketClient.senderPort = 11000;
         
         sock.StartReceiveThread();
@@ -44,17 +45,29 @@ public class GameController : MonoBehaviour
                     break;
 
                 case "READY":
-                    Debug.Log(getMessage(message));
+                    Debug.Log(getMessage("E ARRIVATO READY"));
+                    if(!JoinLobbyMenu.active) { 
                     GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Image>().color = Color.green;
                     GameObject.Find("TextReadyP2").GetComponent<TextMeshProUGUI>().text = "READY";
+                    }
+                    else { 
                     GameObject.Find("ReadyBtnP1Joined").GetComponent<UnityEngine.UI.Image>().color = Color.green;
                     GameObject.Find("TextReadyP1Joined").GetComponent<TextMeshProUGUI>().text = "READY";
+                    }
                     break;
 
-                case "JOINEDTOGAME":
+                case "PLAYERJOINED":
                     Debug.Log(getMessage(message));
                     GameObject.Find("PlayerTwo").GetComponent<UnityEngine.UI.Image>().sprite = purpleSoldier;
                     break;
+
+                case "JOINEDTOGAME":
+                    Debug.Log(getMessage("SEMO JOINATI ALE"));
+                    GameObject.Find("LoadingScreen").SetActive(false);
+                    JoinLobbyMenu.SetActive(true);
+                    break;
+
+
 
                 default:
                     Debug.Log(getMessage(message));
@@ -102,6 +115,7 @@ public class GameController : MonoBehaviour
         {
             
         }*/
+        Debug.Log("</JOINGAME/>" + JoinGUID.text + ";" + JoinPWD.text);
         SocketClient.Send("</JOINGAME/>" + JoinGUID.text + ";" + JoinPWD.text);
     }
 
