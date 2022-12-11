@@ -7,6 +7,8 @@ public class RotationLoading : MonoBehaviour
     public RectTransform _mainIcon;
     public float _timeStep;
     public float _oneStepAngle;
+    float timeAlive;
+    public GameObject timedOutWindow;
 
     float _startTime;
 
@@ -14,7 +16,7 @@ public class RotationLoading : MonoBehaviour
     void Start()
     {
         _startTime = Time.time;
-        
+        timeAlive = Time.time;
     }
 
     // Update is called once per frame
@@ -27,7 +29,25 @@ public class RotationLoading : MonoBehaviour
 
             _mainIcon.localEulerAngles = iconAngle;
 
-            _startTime= Time.time;
+            _startTime = Time.time;
+
+            if (timeAlive - Time.time < -10)
+            {
+                timedOutWindow.SetActive(true);
+            }
         }
+    }
+
+    private void Awake()
+    {
+        timeAlive = Time.time;
+        timedOutWindow.SetActive(false);
+    }
+
+
+    public void timedOut()
+    {
+        timeAlive = Time.time;
+        timedOutWindow.SetActive(false);
     }
 }

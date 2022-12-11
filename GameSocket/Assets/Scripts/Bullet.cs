@@ -22,10 +22,9 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Enemy enemy = collision.GetComponent<Enemy>();
-        if(enemy != null)
+        if(collision.tag == "Player")
         {
-            enemy.TakeDamage(damage);
+            collision.GetComponent<PlayerMovement>().slowMovement();
         }
 
         if(collision.tag != "Coin") { 

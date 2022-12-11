@@ -9,10 +9,10 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
     float horizontalMove = 0f;
 
-    public float runSpeed = 40f;
+    public float runSpeed;
     bool jump = false;
     public int health = 100;
-    public GameObject deathEffect;
+    float timer;
 
     // Update is called once per frame
     void Update()
@@ -26,11 +26,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("isJumping", true);
         }
 
-        if(health <= 0)
-        {
-            Die();
-        }
-
+        
     }
 
     public void OnLanding()
@@ -38,32 +34,21 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isJumping", false);
     }
 
-    
-
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-
-        if (health <= 0)
-        {
-            Die();
-        }
-    }
-
-    void Die()
-    {
-        //Instantiate(deathEffect, transform.position, Quaternion.identity);
-        animator.SetBool("isDead", true);
-    }
-
     private void FixedUpdate()
     {
         controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
         jump = false;
 
-        /*if (hp <= 0)
-            animator.SetBool("isDead", true);*/
+        if(timer - Time.fixedDeltaTime < -5)
+        {
+            runSpeed = 20;
+        }
 
+    }
+
+    public void slowMovement()
+    {
+        timer = Time.fixedDeltaTime;
     }
 
     /*private void OnTriggerEnter2D(Collider2D collision)

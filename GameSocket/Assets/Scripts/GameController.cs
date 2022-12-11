@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        SocketClient.senderIp = "25.56.142.3";
+        SocketClient.senderIp = "25.29.128.1";
         SocketClient.senderPort = 11000;
         
         sock.StartReceiveThread();
@@ -48,11 +48,13 @@ public class GameController : MonoBehaviour
                     Debug.Log(getMessage("E ARRIVATO READY"));
                     if(!JoinLobbyMenu.active) { 
                     GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Image>().color = Color.green;
-                    GameObject.Find("TextReadyP2").GetComponent<TextMeshProUGUI>().text = "READY";
+                    GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Button>().interactable = false;
+                    GameObject.Find("TextReadyP2").GetComponent<TextMeshProUGUI>().text = "Ready";
                     }
                     else { 
                     GameObject.Find("ReadyBtnP1Joined").GetComponent<UnityEngine.UI.Image>().color = Color.green;
-                    GameObject.Find("TextReadyP1Joined").GetComponent<TextMeshProUGUI>().text = "READY";
+                    GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Button>().interactable = false;
+                    GameObject.Find("TextReadyP1Joined").GetComponent<TextMeshProUGUI>().text = "Ready";
                     }
                     break;
 
