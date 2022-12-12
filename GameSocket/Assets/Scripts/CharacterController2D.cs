@@ -61,11 +61,13 @@ public class CharacterController2D : MonoBehaviour
 		//only control the player if grounded or airControl is turned on
 		if (m_Grounded || m_AirControl)
 		{
+			if (move != 0f && this.name == PlayerPrefs.GetString("color"))
+				SocketClient.Send("</MOVE/>" + move);
 			// Move the character by finding the target velocity
-			if(jump)
+			if(jump && this.name == PlayerPrefs.GetString("color"))
             {
 				Debug.Log("SALTO (CHARACTERCONTROLLER.CS)");
-				//SocketClient.Send("</JUMP/>");
+				SocketClient.Send("</JUMP/>");
 			}
 			Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
 			// And then smoothing it out and applying it to the character
