@@ -92,18 +92,19 @@ public class GameController : MonoBehaviour
                     break;
 
                 case "MOVE":
-                    ServerPlayer.GetComponent<CharacterController2D>().Move(float.Parse(getMessage(message)), false);
+                    ServerPlayer.GetComponent<PlayerMovement>().PlayerMove(float.Parse(getMessage(message)));
                     break;
 
                 case "JUMP":
-                    ServerPlayer.GetComponent<CharacterController2D>().Move(0, true);
+                    ServerPlayer.GetComponent<PlayerMovement>().AnimationJump();
                     break;
 
                 default:
-                    Debug.Log(getCommand(message));
+                    // Debug.Log(getMessage(message));
                     Debug.Log("Comando non valido");
                     break;
             }
+            //Debug.Log(message);
         }
 
 

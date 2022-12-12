@@ -20,7 +20,10 @@ public class PlayerMovement : MonoBehaviour
         if (this.gameObject.name == isPlayer)
         {
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed; //A = -1, D = 1;
-            AnimationJump();
+            if (horizontalMove != 0)
+                SocketClient.Send("</MOVE/>" + horizontalMove);
+            if (Input.GetButtonDown("Jump"))
+                AnimationJump();
         }
 
     }
@@ -59,7 +62,6 @@ public class PlayerMovement : MonoBehaviour
     {
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
         controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
-        Debug.Log(jump);
         jump = false;
     }
     public void slowMovement()
