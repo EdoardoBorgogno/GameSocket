@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform target;
+    Transform target;
     public Vector3 offset;
     [Range(1, 10)]
     public float smoothFactor;
@@ -11,6 +11,11 @@ public class CameraFollow : MonoBehaviour
     private void FixedUpdate() // Con update ho dei bug.
     {
         Follow();
+    }
+
+    private void Awake()
+    {
+        target = GameObject.Find(PlayerPrefs.GetString("color")).GetComponent<Transform>();
     }
 
     void Follow()
