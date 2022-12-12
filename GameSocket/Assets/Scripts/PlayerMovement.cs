@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     string isPlayer;
 
     public float runSpeed;
-    bool jump = false;
+    public bool jump = false;
     float timer;
 
     // Update is called once per frame
@@ -20,12 +20,14 @@ public class PlayerMovement : MonoBehaviour
         if (this.gameObject.name == isPlayer)
         {
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed; //A = -1, D = 1;
-            if (horizontalMove != 0)
-                SocketClient.Send("</MOVE/>" + horizontalMove);
-            if (Input.GetButtonDown("Jump"))
-                AnimationJump();
+            animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+            if(Input.GetButtonDown("Jump"))
+            {
+                SocketClient.Send("</JUMP/>");
+                jump = true;
+                animator.SetBool("isJumping", true);
+            }
         }
-
     }
 
     private void Awake()
@@ -38,18 +40,10 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isJumping", false);
     }
 
-    public void AnimationJump()
-    {
-        jump = true;
-        animator.SetBool("isJumping", true);
-
-    }
-
     private void FixedUpdate()
     {
-        PlayerMove(horizontalMove);
-
-
+        controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
+        jump = false;
         /*if (timer - Time.fixedDeltaTime < -5)
         {
             runSpeed = 20;
@@ -57,16 +51,9 @@ public class PlayerMovement : MonoBehaviour
         else runSpeed = 40;*/
 
     }
-
-    public void PlayerMove(float horizontalMove)
-    {
-        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
-        controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
-        jump = false;
-    }
     public void slowMovement()
     {
-        timer = Time.fixedDeltaTime;
+        //timer = Time.fixedDeltaTime;
     }
 
     /*private void OnTriggerEnter2D(Collider2D collision)

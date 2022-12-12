@@ -34228,7 +34228,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7299688492678953120, guid: 5142eb8e5398eb646962aa2e66f78cbb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.74
+      value: -0.69
       objectReference: {fileID: 0}
     - target: {fileID: 7299688493080439970, guid: 5142eb8e5398eb646962aa2e66f78cbb, type: 3}
       propertyPath: CoinCounter
@@ -34240,11 +34240,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7299688493080439979, guid: 5142eb8e5398eb646962aa2e66f78cbb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.03
+      value: -7.32
       objectReference: {fileID: 0}
     - target: {fileID: 7299688493080439979, guid: 5142eb8e5398eb646962aa2e66f78cbb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.04
+      value: -4.09
       objectReference: {fileID: 0}
     - target: {fileID: 7299688493080439979, guid: 5142eb8e5398eb646962aa2e66f78cbb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -42873,11 +42873,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5348001796288762820, guid: be2a7ab2f1b387e4385ff8060dfc164c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.78
+      value: -8.69
       objectReference: {fileID: 0}
     - target: {fileID: 5348001796288762820, guid: be2a7ab2f1b387e4385ff8060dfc164c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.05
+      value: -4.09
       objectReference: {fileID: 0}
     - target: {fileID: 5348001796288762820, guid: be2a7ab2f1b387e4385ff8060dfc164c, type: 3}
       propertyPath: m_LocalPosition.z

@@ -63,14 +63,16 @@ public class CharacterController2D : MonoBehaviour
 		{
 			// Move the character by finding the target velocity
 			
-			if(jump)
+			if(move != 0 && PlayerPrefs.GetString("color") == this.name)
             {
-				Debug.Log("SALTO (CHARACTERCONTROLLER.CS)");
+				Debug.Log("Mio Move:" + move);
+				SocketClient.Send("</MOVE/>" + move);
 				//SocketClient.Send("</JUMP/>");
 			}
-			Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+			//Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
 			// And then smoothing it out and applying it to the character
-			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+			//m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+			this.GetComponent<Rigidbody2D>().velocity = new Vector2(move * 10f, 0);
 
 			// If the input is moving the player right and the player is facing left...
 			if (move > 0 && !m_FacingRight)

@@ -25,16 +25,16 @@ public class GameController : MonoBehaviour
         {
             Debug.Log("Port: " + SocketClient.senderPort);
             Debug.Log("You Are: " + PlayerPrefs.GetString("color"));
-            if(PlayerPrefs.GetString("color") == "Purple")
-            ServerPlayer = GameObject.Find("Red");
+            if (PlayerPrefs.GetString("color") == "Purple")
+                ServerPlayer = GameObject.Find("Red");
             else
-            ServerPlayer = GameObject.Find("Purple");
+                ServerPlayer = GameObject.Find("Purple");
         }
     }
 
     private void Awake()
     {
-        SocketClient.senderIp = "25.56.142.3";
+        SocketClient.senderIp = "25.29.128.1";
         SocketClient.senderPort = 11000;
 
         sock.StartReceiveThread();
@@ -63,7 +63,7 @@ public class GameController : MonoBehaviour
                         GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Button>().interactable = false;
                         GameObject.Find("TextReadyP2").GetComponent<TextMeshProUGUI>().text = "Ready";
                     }
-                    else 
+                    else
                     {
                         GameObject.Find("ReadyBtnP1Joined").GetComponent<UnityEngine.UI.Image>().color = Color.green;
                         GameObject.Find("ReadyBtnP1Joined").GetComponent<UnityEngine.UI.Button>().interactable = false;
@@ -77,7 +77,6 @@ public class GameController : MonoBehaviour
                     break;
 
                 case "JOINEDTOGAME":
-                    
                     Debug.Log(getMessage("SEMO JOINATI ALE"));
                     GameObject.Find("LoadingScreen").SetActive(false);
                     JoinLobbyMenu.SetActive(true);
@@ -88,15 +87,17 @@ public class GameController : MonoBehaviour
                     break;
 
                 case "SHOOT":
-
+                    ServerPlayer.GetComponent<Weapon>().Shoot();
                     break;
 
                 case "MOVE":
-                    ServerPlayer.GetComponent<PlayerMovement>().PlayerMove(float.Parse(getMessage(message)));
+                    Debug.Log(float.Parse(getMessage(message)));
+                    ServerPlayer.GetComponent<CharacterController2D>().Move(float.Parse(getMessage(message)), ServerPlayer.GetComponent<PlayerMovement>().jump);
                     break;
 
                 case "JUMP":
-                    ServerPlayer.GetComponent<PlayerMovement>().AnimationJump();
+                    Debug.Log("Mi è arrivato JUMP");
+                    ServerPlayer.GetComponent<PlayerMovement>().jump = true;
                     break;
 
                 default:

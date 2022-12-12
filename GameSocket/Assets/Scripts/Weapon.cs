@@ -10,13 +10,14 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && PlayerPrefs.GetString("color") == this.name)
         {
             Shoot();
+            SocketClient.Send("</SHOOT/>");
         }
     }
 
-    void Shoot()
+    public void Shoot()
     {
         // Logica di sparo.
         Debug.Log("SPARO DA SCRIPT (WEAPON.CS)");

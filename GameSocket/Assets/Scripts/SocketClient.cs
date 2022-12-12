@@ -47,7 +47,7 @@ public class SocketClient : MonoBehaviour
             catch (Exception e)
             {
             }
-            Thread.Sleep(1);
+            //Thread.Sleep(1);
         }
     }
 
