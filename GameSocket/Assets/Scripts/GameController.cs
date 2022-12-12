@@ -15,21 +15,26 @@ public class GameController : MonoBehaviour
     public TextMeshProUGUI JoinPWD;
     public GameObject LobbyMenu;
     public GameObject JoinLobbyMenu;
+    GameObject ServerPlayer;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        if (SceneManager.GetActiveScene().name != "menu")
+        if (SceneManager.GetActiveScene().name != "Menu")
         {
             Debug.Log("Port: " + SocketClient.senderPort);
             Debug.Log("You Are: " + PlayerPrefs.GetString("color"));
+            if(PlayerPrefs.GetString("color") == "Purple")
+            ServerPlayer = GameObject.Find("Red");
+            else
+            ServerPlayer = GameObject.Find("Purple");
         }
     }
 
     private void Awake()
     {
-        SocketClient.senderIp = "25.29.128.1";
+        SocketClient.senderIp = "25.56.142.3";
         SocketClient.senderPort = 11000;
 
         sock.StartReceiveThread();
@@ -58,10 +63,10 @@ public class GameController : MonoBehaviour
                         GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Button>().interactable = false;
                         GameObject.Find("TextReadyP2").GetComponent<TextMeshProUGUI>().text = "Ready";
                     }
-                    else
+                    else 
                     {
                         GameObject.Find("ReadyBtnP1Joined").GetComponent<UnityEngine.UI.Image>().color = Color.green;
-                        GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Button>().interactable = false;
+                        GameObject.Find("ReadyBtnP1Joined").GetComponent<UnityEngine.UI.Button>().interactable = false;
                         GameObject.Find("TextReadyP1Joined").GetComponent<TextMeshProUGUI>().text = "Ready";
                     }
                     break;
@@ -72,12 +77,13 @@ public class GameController : MonoBehaviour
                     break;
 
                 case "JOINEDTOGAME":
+                    
                     Debug.Log(getMessage("SEMO JOINATI ALE"));
                     GameObject.Find("LoadingScreen").SetActive(false);
                     JoinLobbyMenu.SetActive(true);
                     break;
 
-                case "OPENGAME":
+                case "STARTGAME":
                     SceneManager.LoadScene(getMessage(message));
                     break;
 
@@ -86,7 +92,11 @@ public class GameController : MonoBehaviour
                     break;
 
                 case "MOVE":
+                    ServerPlayer.GetComponent<PlayerMovement>().PlayerMove(float.Parse(getMessage(message)));
+                    break;
 
+                case "JUMP":
+                    ServerPlayer.GetComponent<PlayerMovement>().AnimationJump();
                     break;
 
                 default:

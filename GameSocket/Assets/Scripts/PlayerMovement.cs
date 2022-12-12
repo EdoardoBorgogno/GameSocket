@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController2D controller;
     public Animator animator;
     float horizontalMove = 0f;
-    bool isPlayer;
+    string isPlayer;
 
     public float runSpeed;
     bool jump = false;
@@ -17,20 +17,20 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isPlayer) { 
-        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed; //A = -1, D = 1;
-            if(horizontalMove != 0)
-                SocketClient.Send("</MOVE/>" + horizontalMove);
-        }
-
-        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
-        if(Input.GetButtonDown("Jump"))
+        if (this.gameObject.name == isPlayer)
         {
-            jump = true;
-            animator.SetBool("isJumping", true);
+            horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed; //A = -1, D = 1;
+            if (horizontalMove != 0)
+                SocketClient.Send("</MOVE/>" + horizontalMove);
+            if (Input.GetButtonDown("Jump"))
+                AnimationJump();
         }
 
-        
+    }
+
+    private void Awake()
+    {
+        isPlayer = PlayerPrefs.GetString("color");
     }
 
     public void OnLanding()
@@ -38,10 +38,16 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isJumping", false);
     }
 
+    public void AnimationJump()
+    {
+        jump = true;
+        animator.SetBool("isJumping", true);
+
+    }
+
     private void FixedUpdate()
     {
-        controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
-        jump = false;
+        PlayerMove(horizontalMove);
 
 
         /*if (timer - Time.fixedDeltaTime < -5)
@@ -52,6 +58,12 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    public void PlayerMove(float horizontalMove)
+    {
+        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+        controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
+        jump = false;
+    }
     public void slowMovement()
     {
         timer = Time.fixedDeltaTime;
