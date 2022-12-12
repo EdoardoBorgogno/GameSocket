@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
 using Newtonsoft.Json.Converters;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -15,17 +16,22 @@ public class GameController : MonoBehaviour
     public GameObject LobbyMenu;
     public GameObject JoinLobbyMenu;
 
+
     // Start is called before the first frame update
     void Start()
     {
-
+        if (SceneManager.GetActiveScene().name != "menu")
+        {
+            Debug.Log("Port: " + SocketClient.senderPort);
+            Debug.Log("You Are: " + PlayerPrefs.GetString("color"));
+        }
     }
 
     private void Awake()
     {
         SocketClient.senderIp = "25.29.128.1";
         SocketClient.senderPort = 11000;
-        
+
         sock.StartReceiveThread();
     }
 
@@ -46,15 +52,17 @@ public class GameController : MonoBehaviour
 
                 case "READY":
                     Debug.Log(getMessage("E ARRIVATO READY"));
-                    if(!JoinLobbyMenu.active) { 
-                    GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Image>().color = Color.green;
-                    GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Button>().interactable = false;
-                    GameObject.Find("TextReadyP2").GetComponent<TextMeshProUGUI>().text = "Ready";
+                    if (!JoinLobbyMenu.active)
+                    {
+                        GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Image>().color = Color.green;
+                        GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Button>().interactable = false;
+                        GameObject.Find("TextReadyP2").GetComponent<TextMeshProUGUI>().text = "Ready";
                     }
-                    else { 
-                    GameObject.Find("ReadyBtnP1Joined").GetComponent<UnityEngine.UI.Image>().color = Color.green;
-                    GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Button>().interactable = false;
-                    GameObject.Find("TextReadyP1Joined").GetComponent<TextMeshProUGUI>().text = "Ready";
+                    else
+                    {
+                        GameObject.Find("ReadyBtnP1Joined").GetComponent<UnityEngine.UI.Image>().color = Color.green;
+                        GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Button>().interactable = false;
+                        GameObject.Find("TextReadyP1Joined").GetComponent<TextMeshProUGUI>().text = "Ready";
                     }
                     break;
 
@@ -69,7 +77,17 @@ public class GameController : MonoBehaviour
                     JoinLobbyMenu.SetActive(true);
                     break;
 
+                case "OPENGAME":
+                    SceneManager.LoadScene(getMessage(message));
+                    break;
 
+                case "SHOOT":
+
+                    break;
+
+                case "MOVE":
+
+                    break;
 
                 default:
                     Debug.Log(getMessage(message));
@@ -80,9 +98,9 @@ public class GameController : MonoBehaviour
         }
 
 
-            
 
-        
+
+
     }
 
     private static string getCommand(string str)
@@ -119,6 +137,11 @@ public class GameController : MonoBehaviour
         }*/
         Debug.Log("</JOINGAME/>" + JoinGUID.text + ";" + JoinPWD.text);
         SocketClient.Send("</JOINGAME/>" + JoinGUID.text + ";" + JoinPWD.text);
+    }
+
+    public void youAre(string color)
+    {
+        PlayerPrefs.SetString("color", color);
     }
 
 }

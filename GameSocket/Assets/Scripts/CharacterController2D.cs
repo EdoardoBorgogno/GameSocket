@@ -64,7 +64,7 @@ public class CharacterController2D : MonoBehaviour
 			// Move the character by finding the target velocity
 			if(move != 0) { 
 			Debug.Log("MI MUOVO (CHARACTERCONTROLLER.CS)");
-			//SocketClient.Send("</MOVE/>");
+			//SocketClient.Send("</MOVE/>" + move);
 			}
 			if(jump)
             {

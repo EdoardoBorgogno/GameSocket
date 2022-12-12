@@ -8,16 +8,20 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController2D controller;
     public Animator animator;
     float horizontalMove = 0f;
+    bool isPlayer;
 
     public float runSpeed;
     bool jump = false;
-    public int health = 100;
     float timer;
 
     // Update is called once per frame
     void Update()
     {
+        if(isPlayer) { 
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed; //A = -1, D = 1;
+            if(horizontalMove != 0)
+                SocketClient.Send("</MOVE/>" + horizontalMove);
+        }
 
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
         if(Input.GetButtonDown("Jump"))
@@ -39,10 +43,12 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
         jump = false;
 
-        if(timer - Time.fixedDeltaTime < -5)
+
+        /*if (timer - Time.fixedDeltaTime < -5)
         {
             runSpeed = 20;
         }
+        else runSpeed = 40;*/
 
     }
 
