@@ -61,16 +61,18 @@ public class PlayerMovement : MonoBehaviour
         }
         jump = false;
 
-        if (timer - Time.fixedDeltaTime < -5)
+        if (timer - Time.deltaTime < -5)
         {
+            Debug.Log(timer - Time.deltaTime);
             runSpeed = 20;
         }
-        else runSpeed = 40;
+        else 
+            runSpeed = 40;
 
     }
     public void slowMovement()
     {
-        timer = Time.fixedDeltaTime;
+        timer = Time.deltaTime;
     }
 
     /*private void OnTriggerEnter2D(Collider2D collision)

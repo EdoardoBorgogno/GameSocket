@@ -32,7 +32,8 @@ public class CountDownTimer : MonoBehaviour
 
         GameObject winText = GameObject.Find("winText");
         GameObject.Find("Timer").GetComponent<TextMeshProUGUI>().text = "";
-        if (int.Parse(GameObject.Find("Coin CounterP1").GetComponent<TextMeshProUGUI>().text) > int.Parse(GameObject.Find("Coin CounterP2").GetComponent<TextMeshProUGUI>().text))
+        GameObject.Find("Players").SetActive(false);
+        if (int.Parse(GameObject.Find("Coin CounterP1").GetComponent<TextMeshProUGUI>().text.Replace(":", "")) > int.Parse(GameObject.Find("Coin CounterP2").GetComponent<TextMeshProUGUI>().text.Replace(":", "")))
         {
             winText.GetComponent<TextMeshProUGUI>().text = "Red Player has Won!";
             winText.GetComponent<TextMeshProUGUI>().color = Color.red;
@@ -43,11 +44,6 @@ public class CountDownTimer : MonoBehaviour
             winText.GetComponent<TextMeshProUGUI>().color = Color.magenta;
         }
 
-        SocketClient.Send("</ENDGAME/>");
-    }
-
-    public void BackToMenu()
-    {
-        SceneManager.LoadScene("Menu");
+        SocketClient.Send("</CLOSEGAME/>");
     }
 }

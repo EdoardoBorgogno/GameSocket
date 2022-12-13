@@ -247,11 +247,17 @@ public class GameController : MonoBehaviour
     private void OnApplicationQuit()
     {
         sock.Stop();
+        SocketClient.Send("</CLOSEGAME/>");
     }
 
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 
 }

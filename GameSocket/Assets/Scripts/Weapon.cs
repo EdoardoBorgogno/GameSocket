@@ -6,6 +6,7 @@ public class Weapon : MonoBehaviour
 {
     public Transform firePoint;
     public GameObject bulletPrefab;
+    [SerializeField] private AudioSource shot;
 
     // Update is called once per frame
     void Update()
@@ -19,6 +20,7 @@ public class Weapon : MonoBehaviour
 
     public void Shoot()
     {
+        shot.Play();
         // Logica di sparo.
         Debug.Log("SPARO DA SCRIPT (WEAPON.CS)");
         //SocketClient.Send("</SHOT/>");
