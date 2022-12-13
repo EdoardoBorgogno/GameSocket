@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -20,12 +21,17 @@ public class PlayerMovement : MonoBehaviour
         if (this.gameObject.name == isPlayer)
         {
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed; //A = -1, D = 1;
-            animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
-            if(Input.GetButtonDown("Jump"))
+            if (horizontalMove != 0)
             {
-                //SocketClient.Send("</JUMP/>");
-                jump = true;
-                animator.SetBool("isJumping", true);
+                animator.SetBool("IsRunning", true);
+            }
+            else
+                animator.SetBool("IsRunning", false);
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                SocketClient.Send("</JUMP/>");
+                JumpAnimation();
             }
         }
     }
@@ -37,13 +43,23 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnLanding()
     {
+        Debug.Log("SONO A TERRA");
         animator.SetBool("isJumping", false);
+    }
+
+    public void JumpAnimation()
+    {
+        jump = true;
+        animator.SetBool("isJumping", true);
     }
 
     private void FixedUpdate()
     {
-        SocketClient.Send("</MOVE/>" + this.transform.position.x + ";" + this.transform.position.y);
-        controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
+        if (isPlayer == this.gameObject.name)
+        {
+            SocketClient.Send("</MOVE/>" + this.transform.position.x + ";" + this.transform.position.y);
+            controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
+        }
         jump = false;
         /*if (timer - Time.fixedDeltaTime < -5)
         {

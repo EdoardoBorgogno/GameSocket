@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour
     public GameObject LobbyMenu;
     public GameObject JoinLobbyMenu;
     GameObject ServerPlayer;
+    float oldX = 10;
+    float afterJumpY;
 
 
     // Start is called before the first frame update
@@ -34,7 +36,7 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        SocketClient.senderIp = "25.56.142.3";
+        SocketClient.senderIp = "192.168.1.6";
         SocketClient.senderPort = 11000;
 
         Debug.Log("Ho creato un Thread");
@@ -96,12 +98,35 @@ public class GameController : MonoBehaviour
                 case "MOVE":
                     //Debug.Log(float.Parse(getMessage(message)));
                     //ServerPlayer.GetComponent<CharacterController2D>().Move(float.Parse(getMessage(message)) * Time.fixedDeltaTime, ServerPlayer.GetComponent<PlayerMovement>().jump);
-                    ServerPlayer.transform.position = new Vector3(float.Parse(getMessage(message).Split(";")[0]), float.Parse(getMessage(message).Split(";")[1]), ServerPlayer.transform.position.z);
+
+                    if (ServerPlayer.GetComponent<CharacterController2D>().OnLandEvent != null)
+                        ServerPlayer.transform.position = new Vector3(float.Parse(getMessage(message).Split(";")[0]), float.Parse(getMessage(message).Split(";")[1]), ServerPlayer.transform.position.z);
+                    else
+                        ServerPlayer.transform.position = new Vector3(float.Parse(getMessage(message).Split(";")[0]), ServerPlayer.transform.position.y, ServerPlayer.transform.position.z);
+
+                    if (oldX < float.Parse(getMessage(message).Split(";")[0]) && !ServerPlayer.GetComponent<CharacterController2D>().m_FacingRight)
+                    {
+                        ServerPlayer.GetComponent<CharacterController2D>().Flip();
+                    }
+                    else if (oldX > float.Parse(getMessage(message).Split(";")[0]) && ServerPlayer.GetComponent<CharacterController2D>().m_FacingRight)
+                    {
+                        ServerPlayer.GetComponent<CharacterController2D>().Flip();
+                    }
+
+                    if (oldX != float.Parse(getMessage(message).Split(";")[0]))
+                        ServerPlayer.GetComponent<Animator>().SetBool("IsRunning", true);
+                    else
+                        ServerPlayer.GetComponent<Animator>().SetBool("IsRunning", false);
+
+                    oldX = float.Parse(getMessage(message).Split(";")[0]);
+
                     break;
 
                 case "JUMP":
                     //Debug.Log("Mi è arrivato JUMP");
                     //ServerPlayer.GetComponent<PlayerMovement>().jump = true;
+                    ServerPlayer.GetComponent<CharacterController2D>().Jump();
+                    ServerPlayer.GetComponent<PlayerMovement>().JumpAnimation();
                     break;
 
                 default:
