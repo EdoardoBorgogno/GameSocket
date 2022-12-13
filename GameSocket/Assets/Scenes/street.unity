@@ -34297,6 +34297,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 249027780794a794991e08d94d34f4ca, type: 2}
+    - target: {fileID: 7299688493080439981, guid: 5142eb8e5398eb646962aa2e66f78cbb, type: 3}
+      propertyPath: particles
+      value: 
+      objectReference: {fileID: 5625613481156937227, guid: 3527744526abddc4480f25720cfbe504, type: 3}
     - target: {fileID: 7299688493080439983, guid: 5142eb8e5398eb646962aa2e66f78cbb, type: 3}
       propertyPath: m_JumpForce
       value: 800
@@ -34753,7 +34757,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 92e6b3e8d85da764497fef26f0c57714, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.08
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -41535,6 +41539,8 @@ MonoBehaviour:
   timeStart: 90
   Timer: {fileID: 745145418}
   endMenu: {fileID: 1303027634}
+  Red: {fileID: 1804181551}
+  Purple: {fileID: 393852785}
 --- !u!1001 &1284704705
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43646,6 +43652,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5348001796288762818, guid: be2a7ab2f1b387e4385ff8060dfc164c, type: 3}
+      propertyPath: particles
+      value: 
+      objectReference: {fileID: 5625613481156937227, guid: 3527744526abddc4480f25720cfbe504, type: 3}
     - target: {fileID: 5348001796288762820, guid: be2a7ab2f1b387e4385ff8060dfc164c, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -43725,7 +43735,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 92e6b3e8d85da764497fef26f0c57714, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.08
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -44909,7 +44919,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 289e96f3cfa9a424882bb163d7cd7a89, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.134
+  m_Volume: 0.05
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -6,6 +6,7 @@ public class Weapon : MonoBehaviour
 {
     public Transform firePoint;
     public GameObject bulletPrefab;
+    public bool canShot = true;
     [SerializeField] private AudioSource shot;
 
     // Update is called once per frame
@@ -14,16 +15,29 @@ public class Weapon : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && PlayerPrefs.GetString("color") == this.name)
         {
             Shoot();
-            SocketClient.Send("</SHOOT/>");
+
         }
     }
 
     public void Shoot()
     {
-        shot.Play();
-        // Logica di sparo.
-        Debug.Log("SPARO DA SCRIPT (WEAPON.CS)");
-        //SocketClient.Send("</SHOT/>");
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        if (canShot)
+        {
+            shot.Play();
+            if(PlayerPrefs.GetString("color") == this.name)
+            SocketClient.Send("</SHOOT/>");
+            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+
+            canShot = false;
+
+            StartCoroutine(ableToShot());
+        }
+    }
+
+    IEnumerator ableToShot()
+    {
+        yield return new WaitForSeconds(0.7f);
+
+        canShot = true;
     }
 }

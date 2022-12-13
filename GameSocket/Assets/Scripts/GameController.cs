@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     public Sprite purpleSoldier;
     private SocketClient sock = new SocketClient();
     public TextMeshProUGUI JoinGUID;
+    static bool serverSet = false;
     public TextMeshProUGUI JoinPWD;
     public GameObject LobbyMenu;
     public GameObject JoinLobbyMenu;
@@ -39,7 +40,7 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        if (SceneManager.GetActiveScene().name == "Menu")
+        if (SceneManager.GetActiveScene().name == "Menu" && SocketClient.senderIp == null)
         {
             SocketClient.senderPort = 11000;
 
@@ -85,7 +86,8 @@ public class GameController : MonoBehaviour
                     break;
             }
 
-            if (SocketClient.senderIp == null) { 
+            if (SocketClient.senderIp == null)
+            {
                 NoServerInRunning.SetActive(true);
                 GameObject.Find("MainMenu").SetActive(false);
             }
@@ -176,7 +178,7 @@ public class GameController : MonoBehaviour
                             ServerPlayer.GetComponent<Animator>().SetBool("IsRunning", false);
                     }
 
-                    
+
 
                     oldX = float.Parse(getMessage(message).Split(";")[0]);
 
@@ -246,8 +248,8 @@ public class GameController : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        SocketClient.Send("</ENDGAME/>");
         sock.Stop();
-        SocketClient.Send("</CLOSEGAME/>");
     }
 
     public void Quit()

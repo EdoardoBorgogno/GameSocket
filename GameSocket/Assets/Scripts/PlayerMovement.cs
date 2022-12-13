@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
     float horizontalMove = 0f;
     string isPlayer;
+    public ParticleSystem particles;
 
     public float runSpeed;
     public bool jump = false;
@@ -60,19 +61,18 @@ public class PlayerMovement : MonoBehaviour
             controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
         }
         jump = false;
-
-        if (timer - Time.deltaTime < -5)
-        {
-            Debug.Log(timer - Time.deltaTime);
-            runSpeed = 20;
-        }
-        else 
-            runSpeed = 40;
-
     }
     public void slowMovement()
     {
-        timer = Time.deltaTime;
+        StartCoroutine(reduceSpeed());
+    }
+
+    IEnumerator reduceSpeed()
+    {
+        runSpeed = 20;
+        yield return new WaitForSeconds(4);
+
+        runSpeed = 40;
     }
 
     /*private void OnTriggerEnter2D(Collider2D collision)
