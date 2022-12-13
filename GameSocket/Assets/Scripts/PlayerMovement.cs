@@ -43,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnLanding()
     {
-        Debug.Log("SONO A TERRA");
         animator.SetBool("isJumping", false);
     }
 
@@ -61,16 +60,17 @@ public class PlayerMovement : MonoBehaviour
             controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
         }
         jump = false;
-        /*if (timer - Time.fixedDeltaTime < -5)
+
+        if (timer - Time.fixedDeltaTime < -5)
         {
             runSpeed = 20;
         }
-        else runSpeed = 40;*/
+        else runSpeed = 40;
 
     }
     public void slowMovement()
     {
-        //timer = Time.fixedDeltaTime;
+        timer = Time.fixedDeltaTime;
     }
 
     /*private void OnTriggerEnter2D(Collider2D collision)

@@ -6,6 +6,8 @@ using UnityEngine.UIElements;
 using UnityEngine.UI;
 using Newtonsoft.Json.Converters;
 using UnityEngine.SceneManagement;
+using System.Net;
+using System;
 
 public class GameController : MonoBehaviour
 {
@@ -16,7 +18,8 @@ public class GameController : MonoBehaviour
     public GameObject LobbyMenu;
     public GameObject JoinLobbyMenu;
     GameObject ServerPlayer;
-    float oldX = 10;
+    public GameObject NoServerInRunning;
+    float oldX = -100;
     float afterJumpY;
 
 
@@ -36,12 +39,64 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        SocketClient.senderIp = "192.168.1.6";
-        SocketClient.senderPort = 11000;
+        if (SceneManager.GetActiveScene().name == "Menu")
+        {
+            SocketClient.senderPort = 11000;
 
-        Debug.Log("Ho creato un Thread");
+            SocketClient.udpClient.Client.ReceiveTimeout = 2000;
+
+            WWW www = new WWW("https://paolobruno1280.altervista.org/Esercizi/GameSocket/getServerPHP.php");
+
+            while (!www.isDone) { }
+
+            string data = www.text;
+
+            data = data.Replace("\"", "");
+            data = data.Substring(0, data.Length - 1);
+
+            bool connectionEndedCorrectly;
+            string[] serverIPs = data.Split(';');
+
+            foreach (string serverIP in serverIPs)
+            {
+                connectionEndedCorrectly = true;
+
+                SocketClient.senderIp = serverIP;
+                try
+                {
+                    SocketClient.Send("</SEARCHSERVER/>");
+
+                    var endPoint = new IPEndPoint(IPAddress.Parse(SocketClient.senderIp), 11000);
+
+                    var serverResponse = SocketClient.udpClient.Receive(ref endPoint);
+
+                    if (serverResponse == null)
+                        connectionEndedCorrectly = false;
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.Log(ex.Message + " ----- " + SocketClient.senderIp);
+                    connectionEndedCorrectly = false;
+                    SocketClient.senderIp = null;
+                }
+
+                if (connectionEndedCorrectly)
+                    break;
+            }
+
+            if (SocketClient.senderIp == null) { 
+                NoServerInRunning.SetActive(true);
+                GameObject.Find("MainMenu").SetActive(false);
+            }
+            else
+                Debug.Log(SocketClient.senderIp);
+
+        }
+
         sock.StartReceiveThread();
     }
+
 
     private void Update()
     {
@@ -104,19 +159,24 @@ public class GameController : MonoBehaviour
                     else
                         ServerPlayer.transform.position = new Vector3(float.Parse(getMessage(message).Split(";")[0]), ServerPlayer.transform.position.y, ServerPlayer.transform.position.z);
 
-                    if (oldX < float.Parse(getMessage(message).Split(";")[0]) && !ServerPlayer.GetComponent<CharacterController2D>().m_FacingRight)
+                    if (oldX != -100)
                     {
-                        ServerPlayer.GetComponent<CharacterController2D>().Flip();
-                    }
-                    else if (oldX > float.Parse(getMessage(message).Split(";")[0]) && ServerPlayer.GetComponent<CharacterController2D>().m_FacingRight)
-                    {
-                        ServerPlayer.GetComponent<CharacterController2D>().Flip();
+                        if (oldX < float.Parse(getMessage(message).Split(";")[0]) && !ServerPlayer.GetComponent<CharacterController2D>().m_FacingRight)
+                        {
+                            ServerPlayer.GetComponent<CharacterController2D>().Flip();
+                        }
+                        else if (oldX > float.Parse(getMessage(message).Split(";")[0]) && ServerPlayer.GetComponent<CharacterController2D>().m_FacingRight)
+                        {
+                            ServerPlayer.GetComponent<CharacterController2D>().Flip();
+                        }
+
+                        if (oldX != float.Parse(getMessage(message).Split(";")[0]))
+                            ServerPlayer.GetComponent<Animator>().SetBool("IsRunning", true);
+                        else
+                            ServerPlayer.GetComponent<Animator>().SetBool("IsRunning", false);
                     }
 
-                    if (oldX != float.Parse(getMessage(message).Split(";")[0]))
-                        ServerPlayer.GetComponent<Animator>().SetBool("IsRunning", true);
-                    else
-                        ServerPlayer.GetComponent<Animator>().SetBool("IsRunning", false);
+                    
 
                     oldX = float.Parse(getMessage(message).Split(";")[0]);
 
@@ -187,6 +247,11 @@ public class GameController : MonoBehaviour
     private void OnApplicationQuit()
     {
         sock.Stop();
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
 }

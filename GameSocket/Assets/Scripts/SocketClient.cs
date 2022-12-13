@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Net;
@@ -7,9 +6,9 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
-public class SocketClient : MonoBehaviour
+public class SocketClient
 {
-    private static UdpClient udpClient = new UdpClient(14000);
+    public static UdpClient udpClient = new UdpClient();
 
     private readonly Queue<string> incomingQueue = new Queue<string>();
     Thread receiveThread;
@@ -35,7 +34,6 @@ public class SocketClient : MonoBehaviour
             {
                 Byte[] receiveBytes = udpClient.Receive(ref remoteIpEndPoint);
                 string returnData = Encoding.UTF8.GetString(receiveBytes);
-                Debug.Log(returnData);
 
                 lock (incomingQueue)
                 {
@@ -48,13 +46,13 @@ public class SocketClient : MonoBehaviour
             catch (Exception e)
             {
             }
-            //Thread.Sleep(1);
         }
     }
 
     public string[] getMessages()
     {
         string[] pendingMessages = new string[0];
+
         lock (incomingQueue)
         {
             pendingMessages = new string[incomingQueue.Count];
@@ -76,16 +74,15 @@ public class SocketClient : MonoBehaviour
         udpClient.Send(sendBytes, sendBytes.Length, serverEndpoint);
     }
 
-    public void Stop()
-    {
-        threadRunning = false;
-        receiveThread.Abort();
-        udpClient.Close();
-    }
-
     public void StopThread()
     {
         threadRunning = false;
         receiveThread.Abort();
+    }
+
+    public void Stop()
+    {
+        receiveThread.Interrupt();
+        udpClient.Close();
     }
 }
