@@ -95,12 +95,13 @@ public class GameController : MonoBehaviour
 
                 case "MOVE":
                     //Debug.Log(float.Parse(getMessage(message)));
-                    ServerPlayer.GetComponent<CharacterController2D>().Move(float.Parse(getMessage(message)) * Time.fixedDeltaTime, ServerPlayer.GetComponent<PlayerMovement>().jump);
+                    //ServerPlayer.GetComponent<CharacterController2D>().Move(float.Parse(getMessage(message)) * Time.fixedDeltaTime, ServerPlayer.GetComponent<PlayerMovement>().jump);
+                    ServerPlayer.transform.position = new Vector3(float.Parse(getMessage(message).Split(";")[0]), float.Parse(getMessage(message).Split(";")[1]), ServerPlayer.transform.position.z);
                     break;
 
                 case "JUMP":
                     //Debug.Log("Mi è arrivato JUMP");
-                    ServerPlayer.GetComponent<PlayerMovement>().jump = true;
+                    //ServerPlayer.GetComponent<PlayerMovement>().jump = true;
                     break;
 
                 default:

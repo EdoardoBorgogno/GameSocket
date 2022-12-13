@@ -20,12 +20,10 @@ public class PlayerMovement : MonoBehaviour
         if (this.gameObject.name == isPlayer)
         {
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed; //A = -1, D = 1;
-            if(horizontalMove != 0)
-                SocketClient.Send("</MOVE/>" + horizontalMove);
             animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
             if(Input.GetButtonDown("Jump"))
             {
-                SocketClient.Send("</JUMP/>");
+                //SocketClient.Send("</JUMP/>");
                 jump = true;
                 animator.SetBool("isJumping", true);
             }
@@ -44,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        SocketClient.Send("</MOVE/>" + this.transform.position.x + ";" + this.transform.position.y);
         controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
         jump = false;
         /*if (timer - Time.fixedDeltaTime < -5)
@@ -60,9 +59,9 @@ public class PlayerMovement : MonoBehaviour
 
     /*private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Hit")
+        if (collision.tag == "Player")
         {
-            hp -= 40;
+            SocketClient.Send("")
         }
     }*/
 }
