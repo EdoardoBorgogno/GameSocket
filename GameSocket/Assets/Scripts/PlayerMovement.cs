@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
         if (this.gameObject.name == isPlayer)
         {
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed; //A = -1, D = 1;
+            if(horizontalMove != 0)
+                SocketClient.Send("</MOVE/>" + horizontalMove);
             animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
             if(Input.GetButtonDown("Jump"))
             {

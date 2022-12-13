@@ -35,6 +35,7 @@ public class SocketClient : MonoBehaviour
             {
                 Byte[] receiveBytes = udpClient.Receive(ref remoteIpEndPoint);
                 string returnData = Encoding.UTF8.GetString(receiveBytes);
+                Debug.Log(returnData);
 
                 lock (incomingQueue)
                 {
@@ -78,7 +79,13 @@ public class SocketClient : MonoBehaviour
     public void Stop()
     {
         threadRunning = false;
-        receiveThread.Interrupt();
+        receiveThread.Abort();
         udpClient.Close();
+    }
+
+    public void StopThread()
+    {
+        threadRunning = false;
+        receiveThread.Abort();
     }
 }

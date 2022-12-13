@@ -34,9 +34,10 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        SocketClient.senderIp = "25.29.128.1";
+        SocketClient.senderIp = "25.56.142.3";
         SocketClient.senderPort = 11000;
 
+        Debug.Log("Ho creato un Thread");
         sock.StartReceiveThread();
     }
 
@@ -44,19 +45,20 @@ public class GameController : MonoBehaviour
     {
         foreach (var message in sock.getMessages())
         {
+            //Debug.Log(message);
             switch (getCommand(message))
             {
                 case "GAMEINIT":
-                    Debug.Log(getMessage(message));
+                    //Debug.Log(getMessage(message));
                     GameObject.Find("LoadingScreen").SetActive(false);
                     LobbyMenu.SetActive(true);
-                    Debug.Log(message.Substring(message.IndexOf("/>") + 2, 8));
+                    //Debug.Log(message.Substring(message.IndexOf("/>") + 2, 8));
                     GameObject.Find("lobbyGUID").GetComponent<TextMeshProUGUI>().text = "Game ID:" + message.Substring(message.IndexOf("/>") + 2, 7);
                     GameObject.Find("lobbyPWD").GetComponent<TextMeshProUGUI>().text = "Password:" + message.Substring(message.IndexOf(";") + 1, 5);
                     break;
 
                 case "READY":
-                    Debug.Log(getMessage("E ARRIVATO READY"));
+                    //Debug.Log(getMessage("E ARRIVATO READY"));
                     if (!JoinLobbyMenu.active)
                     {
                         GameObject.Find("ReadyBtnP2").GetComponent<UnityEngine.UI.Image>().color = Color.green;
@@ -72,17 +74,18 @@ public class GameController : MonoBehaviour
                     break;
 
                 case "PLAYERJOINED":
-                    Debug.Log(getMessage(message));
+                    //Debug.Log(getMessage(message));
                     GameObject.Find("PlayerTwo").GetComponent<UnityEngine.UI.Image>().sprite = purpleSoldier;
                     break;
 
                 case "JOINEDTOGAME":
-                    Debug.Log(getMessage("SEMO JOINATI ALE"));
+                    //Debug.Log(getMessage("SEMO JOINATI ALE"));
                     GameObject.Find("LoadingScreen").SetActive(false);
                     JoinLobbyMenu.SetActive(true);
                     break;
 
                 case "STARTGAME":
+                    sock.StopThread();
                     SceneManager.LoadScene(getMessage(message));
                     break;
 
@@ -91,18 +94,18 @@ public class GameController : MonoBehaviour
                     break;
 
                 case "MOVE":
-                    Debug.Log(float.Parse(getMessage(message)));
-                    ServerPlayer.GetComponent<CharacterController2D>().Move(float.Parse(getMessage(message)), ServerPlayer.GetComponent<PlayerMovement>().jump);
+                    //Debug.Log(float.Parse(getMessage(message)));
+                    ServerPlayer.GetComponent<CharacterController2D>().Move(float.Parse(getMessage(message)) * Time.fixedDeltaTime, ServerPlayer.GetComponent<PlayerMovement>().jump);
                     break;
 
                 case "JUMP":
-                    Debug.Log("Mi è arrivato JUMP");
+                    //Debug.Log("Mi è arrivato JUMP");
                     ServerPlayer.GetComponent<PlayerMovement>().jump = true;
                     break;
 
                 default:
                     // Debug.Log(getMessage(message));
-                    Debug.Log("Comando non valido");
+                    //Debug.Log("Comando non valido");
                     break;
             }
             //Debug.Log(message);
@@ -153,6 +156,11 @@ public class GameController : MonoBehaviour
     public void youAre(string color)
     {
         PlayerPrefs.SetString("color", color);
+    }
+
+    private void OnApplicationQuit()
+    {
+        sock.Stop();
     }
 
 }
