@@ -43,7 +43,7 @@ namespace ServerAlpha.Server.ServerCommand.CommandList
                     }
 
                     //if all players are ready start game
-                    if (allPlayersReady)
+                    if (allPlayersReady && item.PlayerList.Count > 1)
                     {
                         foreach (Player player in item.PlayerList)
                         {

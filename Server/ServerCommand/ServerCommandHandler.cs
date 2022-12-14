@@ -3,7 +3,7 @@ namespace ServerAlpha.Server.ServerCommand
     internal class ServerCommandHandler
     {
         // List of all matches on server.
-        private static List<Game> games = new List<Game>();
+        public static List<Game> games = new List<Game>();
 
         /// <summary>
         /// Handle server command sent by player.
@@ -16,60 +16,70 @@ namespace ServerAlpha.Server.ServerCommand
         {
             bool taskComplete = true;
             
-            switch (command)
+            try
             {
-                case "STARTGAME":
-                    {
-                        Game? game = null;
+                switch (command)
+                {
+                    case "STARTGAME":
+                        {
+                            Game? game = null;
 
-                        try
-                        {
-                            game = CommandList.StartGame.startGame(message, senderAddress, senderPort);
-                            games.Add(game);
-                        }
-                        catch (Exception)
-                        {
-                            taskComplete = false;
-                        }
+                            try
+                            {
+                                game = CommandList.StartGame.startGame(message, senderAddress, senderPort);
+                                games.Add(game);
+                            }
+                            catch (Exception)
+                            {
+                                taskComplete = false;
+                            }
 
-                        if (taskComplete)
-                        {
-                            Udp.UdpSrv.sendMessage("</GAMEINIT/>" + game!.GameUID + ";" + game.GamePassword, senderAddress, senderPort);
+                            if (taskComplete)
+                            {
+                                Udp.UdpSrv.sendMessage("</GAMEINIT/>" + game!.GameUID + ";" + game.GamePassword, senderAddress, senderPort);
+                            }
                         }
-                    }
-                    break;
-                case "ENDGAME":
-                    break;
-                case "JOINGAME":
-                    {
-                        CommandList.JoinGame.joinGame(message, senderAddress, senderPort, games);
-                    }
-                    break;
-                case "READY":
-                    {
-                        CommandList.Ready.ready(message, senderAddress, senderPort, games);
-                    }
-                    break;
-                case "MOVE":
-                    {
-                        CommandList.MatchCommand.sendPlayerAction("</MOVE/>" + message, senderAddress, senderPort, games);
-                    }
-                    break;
-                case "JUMP":
-                    {
-                        CommandList.MatchCommand.sendPlayerAction("</JUMP/>", senderAddress, senderPort, games);
-                    }
-                    break;
-                case "SHOOT":
-                    {
-                        CommandList.MatchCommand.sendPlayerAction("</SHOOT/>", senderAddress, senderPort, games);
-                    }
-                    break;
-                case "COIN":
-                    {
-                        CommandList.MatchCommand.sendPlayerAction("</COIN/>" + message, senderAddress, senderPort, games);
-                    }
-                    break;
+                        break;
+                    case "ENDGAME":
+                        {
+                            CommandList.EndGame.endGame(message, senderAddress, senderPort, games);
+                        }
+                        break;
+                    case "JOINGAME":
+                        {
+                            CommandList.JoinGame.joinGame(message, senderAddress, senderPort, games);
+                        }
+                        break;
+                    case "READY":
+                        {
+                            CommandList.Ready.ready(message, senderAddress, senderPort, games);
+                        }
+                        break;
+                    case "MOVE":
+                        {
+                            CommandList.MatchCommand.sendPlayerAction("</MOVE/>" + message, senderAddress, senderPort, games);
+                        }
+                        break;
+                    case "JUMP":
+                        {
+                            CommandList.MatchCommand.sendPlayerAction("</JUMP/>", senderAddress, senderPort, games);
+                        }
+                        break;
+                    case "SHOOT":
+                        {
+                            CommandList.MatchCommand.sendPlayerAction("</SHOOT/>", senderAddress, senderPort, games);
+                        }
+                        break;
+                    case "SEARCHSERVER":
+                        {
+                            Udp.UdpSrv.sendMessage("</SERVERFOUND/>", senderAddress, senderPort);
+                        }
+                        break;
+                }
+            }
+            catch (Exception)
+            {
+                taskComplete = false;
             }
         }
     }
