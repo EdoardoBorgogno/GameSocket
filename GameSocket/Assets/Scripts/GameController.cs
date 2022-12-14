@@ -12,7 +12,7 @@ using System;
 public class GameController : MonoBehaviour
 {
     public Sprite purpleSoldier;
-    private SocketClient sock = new SocketClient();
+    public SocketClient sock = new SocketClient();
     public TextMeshProUGUI JoinGUID;
     static bool serverSet = false;
     public TextMeshProUGUI JoinPWD;
@@ -104,7 +104,7 @@ public class GameController : MonoBehaviour
     {
         foreach (var message in sock.getMessages())
         {
-            //Debug.Log(message);
+            Debug.Log(message);
             switch (getCommand(message))
             {
                 case "GAMEINIT":
@@ -182,6 +182,10 @@ public class GameController : MonoBehaviour
 
                     oldX = float.Parse(getMessage(message).Split(";")[0]);
 
+                    break;
+
+                case "CLOSEGAME":
+                    sock.StopThread();
                     break;
 
                 case "JUMP":

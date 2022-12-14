@@ -82,7 +82,7 @@ public class SocketClient
 
     public void Stop()
     {
-        receiveThread.Interrupt();
+        receiveThread.Abort();
         udpClient.Close();
     }
 }
