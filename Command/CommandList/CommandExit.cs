@@ -18,6 +18,8 @@ namespace ServerAlpha.Command.CommandList
 
             try
             {
+                Server.Udp.UdpSrv.addServerToServerList("/Esercizi/GameSocket/removeServerPHP.php");
+
                 Console.Write("\nIf the server is still active it will be shut down");
                 Console.WriteLine("\nPress a key to exit...");
                 Console.ReadKey();

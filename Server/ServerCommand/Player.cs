@@ -39,7 +39,7 @@ namespace ServerAlpha.Server.ServerCommand
         public bool Ready
         {
             get { return ready; }
-            set { ready = !ready; }
+            set { ready = true; }
         }
         public Tuple<float, float> Position
         {

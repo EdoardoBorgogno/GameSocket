@@ -8,7 +8,8 @@
             { "-version", new Func<string[]?, bool>(CommandList.CommandVersion.commandVersion) },
             { "-serve", new Func<string[]?, bool>(CommandList.CommandServe.commandServe) },
             { "-shut-server", new Func<string[]?, bool>(CommandList.CommandShutServer.commandShutServer) },
-            { "-exit", new Func<string[]?, bool>(CommandList.CommandExit.commandExit) }
+            { "-exit", new Func<string[]?, bool>(CommandList.CommandExit.commandExit) },
+            { "-show-running-match", new Func<string[]?, bool>(CommandList.CommandShowRunningMatch.commandShowRunningMatch) }
         };
 
         /// <summary>
